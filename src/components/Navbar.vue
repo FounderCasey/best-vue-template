@@ -33,7 +33,7 @@
               >
             </div>
           </div>
-          <div class="hidden sm:ml-6 sm:flex sm:items-center">
+          <div class="hidden sm:ml-6 sm:flex sm:items-center gap-3">
             <button
               type="button"
               class="relative rounded-full bg-slate-800 p-1 text-slate-400 hover:text-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -43,15 +43,53 @@
               <GlobeAmericasIcon class="h-6 w-6" aria-hidden="true" />
             </button>
 
+            <!-- Organizations -->
+            <Listbox as="div" v-model="selected">
+              <div class="relative">
+                <ListboxButton
+                  class="relative w-full cursor-default rounded-md bg-slate-800 py-1.5 pl-5 pr-12 text-left text-slate-300 shadow-sm ring-1 ring-inset ring-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-600 sm:text-sm sm:leading-6"
+                >
+                  <span class="block truncate">{{ selected.name }}</span>
+                  <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                    <ChevronUpDownIcon class="h-5 w-5 text-slate-300" aria-hidden="true" />
+                  </span>
+                </ListboxButton>
+
+                <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
+                  <ListboxOptions
+                    class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-slate-800 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+                  >
+                    <ListboxOption as="template" v-for="org in organizations" :key="org._id" :value="org" v-slot="{ active, selected }">
+                      <li
+                        :class="[
+                          active ? 'bg-blue-600 text-white' : 'text-slate-400',
+                          'relative cursor-default select-none py-2 pl-8 pr-4',
+                        ]"
+                      >
+                        <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ org.name }}</span>
+
+                        <span
+                          v-if="selected"
+                          :class="[active ? 'text-white' : 'text-blue-600', 'absolute inset-y-0 left-0 flex items-center pl-1.5']"
+                        >
+                          <CheckIcon class="h-5 w-5" aria-hidden="true" />
+                        </span>
+                      </li>
+                    </ListboxOption>
+                  </ListboxOptions>
+                </transition>
+              </div>
+            </Listbox>
+
             <!-- Profile dropdown -->
-            <Menu as="div" class="relative ml-3">
+            <Menu as="div" class="relative">
               <div>
                 <MenuButton
                   class="relative flex max-w-xs items-center rounded-full bg-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <span class="absolute -inset-1.5" />
                   <span class="sr-only">Open user menu</span>
-                  <img class="h-8 w-8 rounded-full" :src="user.imageUrl" alt="" />
+                  <img class="h-8 w-8 rounded-full" :src="userObj.imageUrl + userObj.name" alt="" />
                 </MenuButton>
               </div>
               <transition
@@ -122,11 +160,11 @@
         <div class="border-t border-slate-700 pb-3 pt-4">
           <div class="flex items-center px-4">
             <div class="flex-shrink-0">
-              <img class="h-10 w-10 rounded-full" :src="user.imageUrl" alt="" />
+              <img class="h-10 w-10 rounded-full" :src="userObj.imageUrl + userObj.name" alt="" />
             </div>
             <div class="ml-3">
-              <div class="text-base font-medium text-slate-300">{{ user.name }}</div>
-              <div class="text-sm font-medium text-slate-500">{{ user.email }}</div>
+              <div class="text-base font-medium text-slate-300">{{ userObj.name }}</div>
+              <div class="text-sm font-medium text-slate-500">{{ userObj.email }}</div>
             </div>
             <button
               type="button"
@@ -154,18 +192,36 @@
 </template>
 
 <script setup>
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
-import { Bars3Icon, GlobeAmericasIcon, XMarkIcon } from "@heroicons/vue/24/outline";
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+  Listbox,
+  ListboxButton,
+  ListboxLabel,
+  ListboxOption,
+  ListboxOptions,
+} from "@headlessui/vue";
+import { Bars3Icon, GlobeAmericasIcon, XMarkIcon, ChevronUpDownIcon, CheckIcon } from "@heroicons/vue/24/outline";
 import { useAuthStore } from "../stores/auth";
 import { useRoute } from "vue-router";
 import { ref, watch, onMounted } from "vue";
+import { storeToRefs } from "pinia";
 
-const user = {
-  name: "Tom Cook",
-  email: "tom@example.com",
-  imageUrl:
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-};
+const authStore = useAuthStore();
+
+const { user, organizations } = storeToRefs(authStore);
+
+const userObj = ref({
+  name: user.value.firstName + " " + user.value.lastName,
+  email: user.value.email,
+  imageUrl: "https://api.dicebear.com/7.x/thumbs/svg?scale=80&translateY=15&seed=",
+});
+
 const navigation = ref([
   { name: "Dashboard", href: "/", current: true },
   { name: "Services", href: "/services", current: false },
@@ -176,6 +232,8 @@ const userNavigation = [
   { name: "Settings", href: "#", isButton: false },
   { name: "Sign out", href: "#", isButton: true },
 ];
+
+const selected = ref(organizations.value[0]);
 
 const route = useRoute();
 
