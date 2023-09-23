@@ -1,14 +1,26 @@
-import './assets/main.css'
+import "./assets/base.css";
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp, markRaw } from "vue";
+import { createPinia } from "pinia";
+import axios from "axios";
 
-import App from './App.vue'
-import router from './router'
+import App from "./App.vue";
+import router from "./router";
 
-const app = createApp(App)
+const API_BASE = import.meta.env.VITE_API_BASE_ENFRA || "http://localhost:3010/v1/";
 
-app.use(createPinia())
-app.use(router)
+axios.defaults.baseURL = API_BASE;
+axios.defaults.withCredentials = true;
 
-app.mount('#app')
+const app = createApp(App);
+
+const pinia = createPinia();
+
+pinia.use(({ store }) => {
+  store.router = markRaw(router);
+});
+
+app.use(pinia);
+app.use(router);
+
+app.mount("#app");
