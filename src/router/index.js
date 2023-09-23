@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
+import ServicesView from "../views/ServicesView.vue";
+import TeamView from "../views/TeamView.vue";
 import { useAuthStore } from "../stores/auth";
 
 const router = createRouter({
@@ -10,6 +12,22 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: HomeView,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: "/services",
+      name: "services",
+      component: ServicesView,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: "/team",
+      name: "team",
+      component: TeamView,
       meta: {
         requiresAuth: true,
       },

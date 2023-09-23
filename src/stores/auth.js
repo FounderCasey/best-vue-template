@@ -5,6 +5,7 @@ import axios from "axios";
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     user: localStorage.getItem("simplestatus-user") ? JSON.parse(localStorage.getItem("simplestatus-user")) : null,
+    organizations: localStorage.getItem("simplestatus-organizations") ? JSON.parse(localStorage.getItem("simplestatus-organizations")) : [],
   }),
   getters: {
     isAuthenticated: (state) => !!state.user,
@@ -41,8 +42,11 @@ export const useAuthStore = defineStore("auth", {
 
         console.log(response.data);
 
-        this.user = response.data;
-        localStorage.setItem("simplestatus-user", JSON.stringify(response.data));
+        this.user = response.data.user;
+        localStorage.setItem("simplestatus-user", JSON.stringify(response.data.user));
+
+        this.organizations = response.data.organizations;
+        localStorage.setItem("simplestatus-organizations", JSON.stringify(response.data.organizations));
 
         return this.router.push("/");
       } catch (error) {
@@ -50,6 +54,14 @@ export const useAuthStore = defineStore("auth", {
         if (error.response) return error.response;
         else return "error";
       }
+    },
+
+    signOut() {
+      localStorage.removeItem("simplestatus-user");
+      localStorage.removeItem("simplestatus-organizations");
+      this.user = null;
+      this.organizations = [];
+      return this.router.push("/login");
     },
   },
 });
