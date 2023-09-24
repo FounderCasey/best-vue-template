@@ -3,6 +3,7 @@ import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
 import ServicesView from "../views/ServicesView.vue";
 import TeamView from "../views/TeamView.vue";
+import StatusView from "../views/StatusView.vue";
 import { useAuthStore } from "../stores/auth";
 
 const router = createRouter({
@@ -40,6 +41,14 @@ const router = createRouter({
         requiresAuth: false,
       },
     },
+    {
+      path: "/status",
+      name: "status",
+      component: StatusView,
+      meta: {
+        requiresAuth: false,
+      },
+    },
   ],
 });
 
@@ -52,6 +61,8 @@ router.beforeEach((to, from, next) => {
       next("/login");
     }
   } else if (to.matched.some((record) => !record.meta.requiresAuth)) {
+    if (to.name === "status") return next();
+
     if (useAuthStore().isAuthenticated) {
       next("/");
       return;
