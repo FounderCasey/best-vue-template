@@ -64,6 +64,10 @@ const history = ref([
 ]);
 
 onMounted(async () => {
+  await axios.get("http://localhost:3010/v1/").then((response) => {
+    console.log(response.data);
+  });
+
   //await axios.get("/api/organization").then((response) => {
   //organization.value = response.data;
   //});
