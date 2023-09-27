@@ -6,6 +6,7 @@ export const useAuthStore = defineStore("auth", {
   state: () => ({
     user: localStorage.getItem("simplestatus-user") ? JSON.parse(localStorage.getItem("simplestatus-user")) : null,
     organizations: localStorage.getItem("simplestatus-organizations") ? JSON.parse(localStorage.getItem("simplestatus-organizations")) : [],
+    services: localStorage.getItem("simplestatus-services") ? JSON.parse(localStorage.getItem("simplestatus-services")) : [],
   }),
   getters: {
     isAuthenticated: (state) => !!state.user,
@@ -49,6 +50,31 @@ export const useAuthStore = defineStore("auth", {
         localStorage.setItem("simplestatus-organizations", JSON.stringify(response.data.organizations));
 
         return this.router.push("/");
+      } catch (error) {
+        console.log(error);
+        if (error.response) return error.response;
+        else return "error";
+      }
+    },
+    async fetchServices() {
+      try {
+        const response = await axios.post("services/fetch-all", { organizationId: this.organizations[0]._id });
+        this.services = response.data;
+        localStorage.setItem("simplestatus-services", JSON.stringify(response.data));
+        return;
+      } catch (error) {
+        console.log(error);
+        if (error.response) return error.response;
+        else return "error";
+      }
+    },
+    async createService(data) {
+      try {
+        data.organizationId = this.organizations[0]._id;
+        const response = await axios.post("services/create", data);
+        this.services = response.data;
+        localStorage.setItem("simplestatus-services", JSON.stringify(response.data));
+        return;
       } catch (error) {
         console.log(error);
         if (error.response) return error.response;

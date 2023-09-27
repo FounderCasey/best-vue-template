@@ -27,7 +27,7 @@
             <div
               v-for="i in history"
               :class="[
-                i.status == 'up' ? 'bg-emerald-400 hover:bg-emerald-500' : 'bg-rose-400 hover:bg-rose-500',
+                i.status == 'up' ? 'bg-emerald-400 hover:bg-emerald-600' : 'bg-rose-400 hover:bg-rose-600',
                 'w-5 h-10 bg-slate-700 rounded-sm duration-100',
               ]"
             ></div>
@@ -55,6 +55,8 @@ const history = ref([
     date.setDate(date.getDate() - i - 1);
 
     let ran = Math.random() * 10;
+
+    console.log(ran > 0.2 ? "up" : "down");
 
     return {
       timestamp: date.getTime(),
