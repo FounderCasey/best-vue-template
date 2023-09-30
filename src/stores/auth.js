@@ -82,6 +82,34 @@ export const useAuthStore = defineStore("auth", {
       }
     },
 
+    async updateService(data) {
+      try {
+        data.organizationId = this.organizations[0]._id;
+        const response = await axios.post("services/update", data);
+        this.services = response.data;
+        localStorage.setItem("simplestatus-services", JSON.stringify(response.data));
+        return;
+      } catch (error) {
+        console.log(error);
+        if (error.response) return error.response;
+        else return "error";
+      }
+    },
+
+    async deleteService(data) {
+      try {
+        data.organizationId = this.organizations[0]._id;
+        const response = await axios.post("services/delete", data);
+        this.services = response.data;
+        localStorage.setItem("simplestatus-services", JSON.stringify(response.data));
+        return;
+      } catch (error) {
+        console.log(error);
+        if (error.response) return error.response;
+        else return "error";
+      }
+    },
+
     signOut() {
       localStorage.removeItem("simplestatus-user");
       localStorage.removeItem("simplestatus-organizations");

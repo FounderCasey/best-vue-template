@@ -8,12 +8,12 @@
             <div class="flex flex-shrink-0 items-center">
               <img
                 class="block h-8 w-auto lg:hidden"
-                src="https://tailwindui.com/img/logos/mark.svg?color=blue&shade=600"
+                src="https://tailwindui.com/img/logos/mark.svg?color=blue&shade=400"
                 alt="Your Company"
               />
               <img
                 class="hidden h-8 w-auto lg:block"
-                src="https://tailwindui.com/img/logos/mark.svg?color=blue&shade=600"
+                src="https://tailwindui.com/img/logos/mark.svg?color=blue&shade=400"
                 alt="Your Company"
               />
             </div>
@@ -24,7 +24,7 @@
                 :to="item.href"
                 :class="[
                   item.current
-                    ? 'border-blue-500 text-slate-300'
+                    ? 'border-sky-500 text-slate-300'
                     : 'border-transparent text-slate-400 hover:border-slate-400 hover:text-slate-300',
                   'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium',
                 ]"
@@ -36,7 +36,7 @@
           <div class="hidden sm:ml-6 sm:flex sm:items-center gap-3">
             <button
               type="button"
-              class="relative rounded-full bg-slate-800 p-1 text-slate-400 hover:text-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="relative rounded-full bg-slate-800 p-1 text-slate-400 hover:text-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500"
             >
               <!-- <span class="absolute -inset-1.5" /> -->
               <span class="sr-only">View notifications</span>
@@ -47,7 +47,7 @@
             <Listbox as="div" v-model="selected">
               <div class="relative">
                 <ListboxButton
-                  class="relative w-full cursor-default rounded-md bg-slate-800 py-1.5 pl-5 pr-12 text-left text-slate-300 shadow-sm ring-1 ring-inset ring-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-600 sm:text-sm sm:leading-6"
+                  class="relative w-full cursor-default rounded-md bg-slate-800 py-1.5 pl-5 pr-12 text-left text-slate-300 shadow-sm ring-1 ring-inset ring-slate-600 focus:outline-none focus:ring-2 focus:ring-sky-600 sm:text-sm sm:leading-6"
                 >
                   <span class="block truncate">{{ selected.name }}</span>
                   <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -61,16 +61,13 @@
                   >
                     <ListboxOption as="template" v-for="org in organizations" :key="org._id" :value="org" v-slot="{ active, selected }">
                       <li
-                        :class="[
-                          active ? 'bg-blue-600 text-white' : 'text-slate-400',
-                          'relative cursor-default select-none py-2 pl-8 pr-4',
-                        ]"
+                        :class="[active ? 'bg-sky-600 text-white' : 'text-slate-400', 'relative cursor-default select-none py-2 pl-8 pr-4']"
                       >
                         <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ org.name }}</span>
 
                         <span
                           v-if="selected"
-                          :class="[active ? 'text-white' : 'text-blue-600', 'absolute inset-y-0 left-0 flex items-center pl-1.5']"
+                          :class="[active ? 'text-white' : 'text-sky-600', 'absolute inset-y-0 left-0 flex items-center pl-1.5']"
                         >
                           <CheckIcon class="h-5 w-5" aria-hidden="true" />
                         </span>
@@ -85,7 +82,7 @@
             <Menu as="div" class="relative">
               <div>
                 <MenuButton
-                  class="relative flex max-w-xs items-center rounded-full bg-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  class="relative flex max-w-xs items-center rounded-full bg-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
                 >
                   <span class="absolute -inset-1.5" />
                   <span class="sr-only">Open user menu</span>
@@ -128,7 +125,7 @@
           <div class="-mr-2 flex items-center sm:hidden">
             <!-- Mobile menu button -->
             <DisclosureButton
-              class="relative inline-flex items-center justify-center rounded-md bg-slate-800 p-2 text-slate-400 hover:bg-slate-700 hover:text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="relative inline-flex items-center justify-center rounded-md bg-slate-800 p-2 text-slate-400 hover:bg-slate-700 hover:text-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
             >
               <span class="absolute -inset-0.5" />
               <span class="sr-only">Open main menu</span>
@@ -149,7 +146,7 @@
             :href="item.href"
             :class="[
               item.current
-                ? 'border-blue-500 bg-slate-700 text-slate-300'
+                ? 'border-sky-500 bg-slate-700 text-slate-300'
                 : 'border-transparent text-slate-600 hover:border-slate-300 hover:bg-slate-700 hover:text-slate-300',
               'block border-l-4 py-2 pl-3 pr-4 text-base font-medium',
             ]"
@@ -168,7 +165,7 @@
             </div>
             <button
               type="button"
-              class="relative ml-auto flex-shrink-0 rounded-full bg-slate-800 p-1 text-slate-400 hover:text-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="relative ml-auto flex-shrink-0 rounded-full bg-slate-800 p-1 text-slate-400 hover:text-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500"
             >
               <span class="absolute -inset-1.5" />
               <span class="sr-only">View notifications</span>

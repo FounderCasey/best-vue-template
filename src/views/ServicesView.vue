@@ -3,8 +3,12 @@
     <Navbar />
     <div class="py-10">
       <header>
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <h1 class="text-3xl font-bold leading-tight tracking-tight text-slate-300">Services</h1>
+          <button class="button-main" @click="showNewServiceSlideOver = true">
+            <PlusIcon class="h-5 w-5" />
+            <span>Add Service</span>
+          </button>
         </div>
       </header>
       <main>
@@ -12,7 +16,7 @@
           <!-- Your content -->
 
           <div class="mt-3">
-            <ul role="list" class="divide-y divide-gray-100">
+            <ul role="list" class="space-y-3">
               <li
                 v-for="(service, index) in services"
                 :key="index"
@@ -51,24 +55,15 @@
                         class="absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-slate-800 py-2 shadow-lg ring-1 ring-slate-700 focus:outline-none font-medium"
                       >
                         <MenuItem v-slot="{ active }">
-                          <a
-                            href="#"
-                            :class="[
-                              active ? 'text-slate-300' : '',
-                              'block px-3 py-1 hover:text-slate-300 text-sm leading-6 text-slate-400',
-                            ]"
-                            >View profile<span class="sr-only">, {{ service.name }}</span></a
+                          <button
+                            @click="selectService(service)"
+                            class="block px-3 py-1 hover:text-slate-300 text-sm leading-6 text-slate-400"
                           >
+                            Edit service
+                          </button>
                         </MenuItem>
                         <MenuItem v-slot="{ active }">
-                          <a
-                            href="#"
-                            :class="[
-                              active ? 'text-slate-300' : '',
-                              'block px-3 py-1 hover:text-slate-300 text-sm leading-6 text-slate-400',
-                            ]"
-                            >Message<span class="sr-only">, {{ service.name }}</span></a
-                          >
+                          <button class="block px-3 py-1 hover:text-slate-300 text-sm leading-6 text-slate-400">Delete service</button>
                         </MenuItem>
                       </MenuItems>
                     </transition>
@@ -77,37 +72,59 @@
               </li>
             </ul>
           </div>
-
-          <div class="flex flex-col gap-3">
-            <input type="text" v-model="name" />
-            <input type="text" v-model="url" />
-
-            <button @click="createService">Create Service</button>
-          </div>
         </div>
       </main>
     </div>
+
+    <Transition>
+      <NewServiceSlideOver @toggle="toggleNewServiceSlideOver" :showNewServiceSlideOver="showNewServiceSlideOver" />
+    </Transition>
+    <Transition>
+      <EditServiceSlideOver
+        @toggle="toggleEditServiceSlideOver"
+        :showEditServiceSlideOver="showEditServiceSlideOver"
+        :service="selectedService"
+      />
+    </Transition>
   </div>
 </template>
 
 <script setup>
 import Navbar from "../components/Navbar.vue";
+import NewServiceSlideOver from "../components/NewServiceSlideOver.vue";
+import EditServiceSlideOver from "../components/EditServiceSlideOver.vue";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { EllipsisVerticalIcon } from "@heroicons/vue/20/solid";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, Transition } from "vue";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "../stores/auth";
-import { ExclamationTriangleIcon } from "@heroicons/vue/24/outline";
+import { ExclamationTriangleIcon, PlusIcon } from "@heroicons/vue/24/outline";
 
 const authStore = useAuthStore();
 
 const { services } = storeToRefs(authStore);
 
+const showNewServiceSlideOver = ref(false);
+const showEditServiceSlideOver = ref(false);
+const selectedService = ref(null);
+
 const name = ref("");
 const url = ref("");
 
-const createService = async () => {
-  await authStore.createService({ name: name.value, url: url.value });
+const confirmDelete = ref(false);
+
+const toggleNewServiceSlideOver = (isOpen) => {
+  showNewServiceSlideOver.value = isOpen;
+};
+
+const toggleEditServiceSlideOver = (isOpen) => {
+  showEditServiceSlideOver.value = isOpen;
+};
+
+const selectService = (service) => {
+  console.log(service);
+  selectedService.value = service;
+  toggleEditServiceSlideOver(true);
 };
 
 onMounted(async () => {
