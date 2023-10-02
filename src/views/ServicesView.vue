@@ -28,7 +28,9 @@
                   </div>
                   <div class="min-w-0 flex-auto">
                     <p class="text-sm font-semibold leading-6 text-slate-400">
-                      <a :href="service.url" class="hover:text-slate-100 duration-200">{{ service.url }}</a>
+                      <router-link :to="`/services/${service._id}`" class="hover:text-slate-100 duration-200">{{
+                        service.url
+                      }}</router-link>
                     </p>
                   </div>
                 </div>

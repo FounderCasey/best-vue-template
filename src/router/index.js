@@ -4,6 +4,7 @@ import LoginView from "../views/LoginView.vue";
 import ServicesView from "../views/ServicesView.vue";
 import TeamView from "../views/TeamView.vue";
 import StatusView from "../views/StatusView.vue";
+import ServiceView from "../views/ServiceView.vue";
 import { useAuthStore } from "../stores/auth";
 
 const router = createRouter({
@@ -21,6 +22,14 @@ const router = createRouter({
       path: "/services",
       name: "services",
       component: ServicesView,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: "/services/:id",
+      name: "service",
+      component: ServiceView,
       meta: {
         requiresAuth: true,
       },
