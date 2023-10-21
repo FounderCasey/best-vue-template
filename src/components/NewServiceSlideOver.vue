@@ -170,7 +170,6 @@ const createService = async () => {
     url: url.value,
     phone: phone.value,
     sms: sms.value,
-    email: email.value,
     slack: slack.value,
     discord: discord.value,
   });

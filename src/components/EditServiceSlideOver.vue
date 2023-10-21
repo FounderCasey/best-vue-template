@@ -84,16 +84,6 @@
                       <div class="mt-1 flex items-center gap-2">
                         <input
                           type="checkbox"
-                          name="email"
-                          id="email"
-                          v-model="email"
-                          class="h-4 w-4 rounded bg-slate-700 ring-1 !ring-slate-600 border-slate-700 text-sky-500 --tw-offset !focus:ring-sky-500 !ring-offset-slate-800"
-                        />
-                        <label for="email"> Email </label>
-                      </div>
-                      <div class="mt-1 flex items-center gap-2">
-                        <input
-                          type="checkbox"
                           name="slack"
                           id="slack"
                           v-model="slack"
@@ -171,7 +161,6 @@ watch(
       url.value = oldService.value?.url;
       phone.value = oldService.value?.phone;
       sms.value = oldService.value?.sms;
-      email.value = oldService.value?.email;
       slack.value = oldService.value?.slack;
       discord.value = oldService.value?.discord;
     }

@@ -26,17 +26,17 @@
               <!-- Lets do four divs, flex wrap even spacing -->
               <div class="grid grid-cols-1 h-full sm:grid-cols-2 gap-4">
                 <div
-                  v-for="person in people"
-                  :key="person.email"
+                  v-for="item in meta"
+                  :key="item.title"
                   class="relative flex items-center space-x-3 rounded-lg border border-slate-700 bg-slate-800 px-6 py-5 shadow-sm hover:border-sky-600 duration-200"
                 >
                   <div class="flex-shrink-0">
                     <!-- add icon -->
-                    <component :is="person.icon" class="h-6 w-6" aria-hidden="true" />
+                    <component :is="item.icon" class="h-6 w-6" aria-hidden="true" />
                   </div>
                   <div class="min-w-0 flex-1">
-                    <p class="truncate text-sm text-gray-500">{{ person.name }}</p>
-                    <p class="text-base font-medium text-slate-300">{{ person.role }}</p>
+                    <p class="truncate text-sm text-gray-500">{{ item.title }}</p>
+                    <p class="text-base font-medium text-slate-300">{{ item.value }}</p>
                   </div>
                 </div>
               </div>
@@ -57,11 +57,7 @@
     </div>
 
     <Transition>
-      <EditServiceSlideOver
-        @toggle="toggleEditServiceSlideOver"
-        :showEditServiceSlideOver="showEditServiceSlideOver"
-        :service="selectedService"
-      />
+      <EditServiceSlideOver @toggle="toggleEditServiceSlideOver" :showEditServiceSlideOver="showEditServiceSlideOver" :service="service" />
     </Transition>
   </div>
 </template>
@@ -120,39 +116,26 @@ const formatTimeDifference = (targetDate) => {
   return formattedTime;
 };
 
-const people = [
+const meta = [
   {
-    name: "Current Uptime",
-    email: "leslie.alexander@example.com",
+    title: "Current Uptime",
     icon: ClockIcon,
-
-    role: formatTimeDifference(service.value.createdAt),
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+    value: formatTimeDifference(service.value.createdAt),
   },
   {
-    name: "Total Incidents",
-    email: "leslie.alexander@example.com",
+    title: "Total Incidents",
     icon: ExclamationTriangleIcon,
-    role: Math.floor(Math.random() * 10),
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+    value: Math.floor(Math.random() * 10),
   },
   {
-    name: "Average response time",
-    email: "leslie.alexander@example.com",
+    title: "Average response time",
     icon: ChartBarIcon,
-    role: Math.floor(Math.random() * 30) + "ms",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+    value: Math.floor(Math.random() * 30) + "ms",
   },
   {
-    name: "Created at",
-    email: "leslie.alexander@example.com",
+    title: "Created at",
     icon: SunIcon,
-    role: new Date(service.value.createdAt).toLocaleString(),
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+    value: new Date(service.value.createdAt).toLocaleString(),
   },
   // More people...
 ];
