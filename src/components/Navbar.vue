@@ -34,17 +34,16 @@
             </div>
           </div>
           <div class="hidden sm:ml-6 sm:flex sm:items-center gap-3">
-            <button
+            <!-- <button
               type="button"
               class="relative rounded-full bg-slate-800 p-1 text-slate-400 hover:text-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500"
             >
-              <!-- <span class="absolute -inset-1.5" /> -->
               <span class="sr-only">View notifications</span>
               <GlobeAmericasIcon class="h-6 w-6" aria-hidden="true" />
-            </button>
+            </button> -->
 
             <!-- Organizations -->
-            <Listbox as="div" v-model="selected">
+            <!-- <Listbox as="div" v-model="selected">
               <div class="relative">
                 <ListboxButton
                   class="relative w-full cursor-default rounded-md bg-slate-800 py-1.5 pl-5 pr-12 text-left text-slate-300 shadow-sm ring-1 ring-inset ring-slate-600 focus:outline-none focus:ring-2 focus:ring-sky-600 sm:text-sm sm:leading-6"
@@ -76,7 +75,7 @@
                   </ListboxOptions>
                 </transition>
               </div>
-            </Listbox>
+            </Listbox> -->
 
             <!-- Profile dropdown -->
             <Menu as="div" class="relative">
@@ -222,11 +221,11 @@ const userObj = ref({
 const navigation = ref([
   { name: "Dashboard", href: "/", current: true },
   { name: "Services", href: "/services", current: false },
-  { name: "Team", href: "/team", current: false },
+  // { name: "Team", href: "/team", current: false },
 ]);
 const userNavigation = [
-  { name: "Your Profile", href: "#", isButton: false },
-  { name: "Settings", href: "#", isButton: false },
+  { name: "Profile", href: "/profile", isButton: false },
+  // { name: "Settings", href: "#", isButton: false },
   { name: "Sign out", href: "#", isButton: true },
 ];
 
