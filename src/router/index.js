@@ -3,6 +3,7 @@ import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
 import ServicesView from "../views/ServicesView.vue";
 import TeamView from "../views/TeamView.vue";
+import ProfileView from "../views/ProfileView.vue";
 import StatusView from "../views/StatusView.vue";
 import ServiceView from "../views/ServiceView.vue";
 import { useAuthStore } from "../stores/auth";
@@ -38,6 +39,14 @@ const router = createRouter({
       path: "/team",
       name: "team",
       component: TeamView,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: "/profile",
+      name: "profile",
+      component: ProfileView,
       meta: {
         requiresAuth: true,
       },
