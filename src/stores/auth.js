@@ -110,6 +110,20 @@ export const useAuthStore = defineStore("auth", {
       }
     },
 
+    async fetchHistory(data) {
+      try {
+        const response = await axios.post("histories/fetch-all", { serviceId: data });
+
+        console.log(response.data);
+
+        return response.data;
+      } catch (error) {
+        console.log(error);
+        if (error.response) return error.response;
+        else return "error";
+      }
+    },
+
     signOut() {
       localStorage.removeItem("simplestatus-user");
       localStorage.removeItem("simplestatus-organizations");

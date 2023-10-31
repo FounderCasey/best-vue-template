@@ -50,9 +50,12 @@
             </div>
           </div>
           <div class="flex justify-between gap-x-6">
-            <div class="flex-1 rounded-md h-80 bg-green-300"></div>
+            <div class="flex-1 rounded-md p-6 bg-slate-800 border border-slate-700">
+              <LineChart ref="lineRef" :data="chartData" :options="chartOptions" />
+            </div>
           </div>
         </div>
+        <button @="refreshChart">Refresh</button>
       </main>
     </div>
 
@@ -65,7 +68,7 @@
 <script setup>
 import Navbar from "../components/Navbar.vue";
 import EditServiceSlideOver from "../components/EditServiceSlideOver.vue";
-import { onMounted, ref, Transition } from "vue";
+import { computed, onMounted, ref, Transition, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "../stores/auth";
 import {
@@ -79,10 +82,59 @@ import {
   SunIcon,
 } from "@heroicons/vue/24/outline";
 import { useRoute } from "vue-router";
+import { LineChart } from "vue-chart-3";
+import { Chart, registerables } from "chart.js";
 
 const route = useRoute();
 
 const authStore = useAuthStore();
+
+// charts
+Chart.register(...registerables);
+Chart.defaults.color = "#f5f6fa";
+
+const lineRef = ref();
+
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  scales: {
+    y: {
+      beginAtZero: true,
+    },
+  },
+};
+
+let analytics = ref(null);
+
+let chartData = computed(() => {
+  console.log("Chart data");
+  if (analytics.value) {
+    return {
+      labels: ["January", "February", "March", "April", "May", "June", "July"],
+      datasets: [
+        {
+          label: "Uptime",
+          data: [65, 59, 80, 81, 56, 55, 40],
+          borderColor: "#10b981",
+          backgroundColor: "#10b981",
+          fill: true,
+        },
+      ],
+    };
+  }
+});
+
+const refreshChart = () => {
+  console.log("Refreshing chart");
+  lineRef.value.update();
+};
+
+watch(chartData, () => {
+  console.log("Chart data changed");
+  console.log(chartData.value);
+  lineRef.value.update();
+});
 
 const { services } = storeToRefs(authStore);
 const showEditServiceSlideOver = ref(false);
@@ -144,5 +196,7 @@ onMounted(async () => {
   // fetch services
   console.log(route.params.id);
   console.log(service.value);
+
+  analytics.value = await authStore.fetchHistory(route.params.id);
 });
 </script>
